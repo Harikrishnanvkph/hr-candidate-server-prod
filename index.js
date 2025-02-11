@@ -24,7 +24,7 @@ async function InitiateDatabase(){
 
 async function ConnectToServer(){
     server.use(cors(corsOptions));
-    const httpServer = server.listen(3000,'localhost',()=>{
+    const httpServer = server.listen(port,()=>{
         console.log(`Connected to Server Successfully! http://localhost:${port}`)
     })
     const socketServer = new Server(httpServer,{
