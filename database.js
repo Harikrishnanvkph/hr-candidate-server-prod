@@ -215,7 +215,7 @@ async function createConversation(sender, receiver){
     },{projection : {_id : 0}})
     const {uuid,mail, name} = receiver
     delete sender.socketId
-    return check ?? await socketClient.collection('conversations').insertOne({
+    const insertOp = check ?? await socketClient.collection('conversations').insertOne({
         conversation_id : cnv,
         sender : sender,
         receiver : {
@@ -228,6 +228,13 @@ async function createConversation(sender, receiver){
             content : `Hi ${sender.name},\nGreetings of the day\nthis is your helpdesk chat\nplease send a message for any assistance needed.`
         }]
     });
+
+    console.log('new')
+
+    return await socketClient.collection('conversations').findOne(
+        {_id : insertOp.insertedId},
+        {projection : {_id : 0, messages : 0}}
+    )
 }
 
 module.exports = {getCandidate,imageUpload,updateNumber,updateSkill,getUserId,
